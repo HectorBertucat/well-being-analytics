@@ -16,7 +16,20 @@ class MainActivity : AppCompatActivity() {
         val buttonStart = findViewById<Button>(R.id.buttonStart)
 
         buttonStart.setOnClickListener {
-            val userId = editTextUserId.text.toString()
+            val id = editTextUserId.text.toString()
+            val name = editTextUserName.text.toString()
+
+            if (id.isEmpty() && name.isEmpty()) { // if both fields are empty
+                return@setOnClickListener
+            } else {
+                if (id.isNotEmpty()) {
+                    // TODO: check if id is valid, if it is then "login" with id
+                }
+                if (name.isNotEmpty()) {
+                    // TODO: create user with name, create "login" with generated id
+                }
+                // TODO: show error saying id was not valid
+            }
         }
     }
 }
