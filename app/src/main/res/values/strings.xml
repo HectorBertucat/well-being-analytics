@@ -4,4 +4,11 @@
     <string name="enter_name">Enter name</string>
     <string name="enter_id">Enter Id</string>
     <string name="or">Or</string>
+    <string name="question_placeholder">My life was well balanced between my family, personal and academic activities...</string>
+    <string name="disagree_image_desc">disagree-image</string>
+    <string name="neutral_image_desc">neutral image</string>
+    <string name="agree_image_desc">agree image</string>
+    <string name="disagree">Disagree</string>
+    <string name="neutral">Neither</string>
+    <string name="agree">Agree</string>
 </resources>
