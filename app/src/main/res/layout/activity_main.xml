@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <EditText
+        android:id="@+id/editTextUserName"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="203dp"
+        android:hint="@string/enter_name"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editTextUserId"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewOr"
+        android:layout_alignStart="@+id/textViewOr"
+        android:layout_marginStart="-47dp"
+        android:layout_marginTop="35dp"
+        android:hint="@string/enter_id"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:id="@+id/textViewOr"
+        android:layout_width="153dp"
+        android:layout_height="57dp"
+        android:layout_below="@+id/editTextUserName"
+        android:layout_alignStart="@+id/editTextUserName"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
+        android:text="@string/or"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <Button
+        android:id="@+id/buttonStart"
+        android:layout_width="176dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/editTextUserId"
+        android:layout_alignStart="@+id/editTextUserId"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="70dp"
+        android:text="@string/start"
+        android:textSize="24sp" />
+
+</RelativeLayout>
