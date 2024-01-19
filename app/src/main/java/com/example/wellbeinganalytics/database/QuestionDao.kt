@@ -6,8 +6,8 @@ import androidx.room.Insert
 @Dao
 interface QuestionDao {
     @Insert
-    fun insertQuestion(question: Question)
+    suspend fun insertQuestion(question: Question)
 
     @Insert
-    fun insertQuestions(questions: List<Question>)
+    suspend fun insertQuestions(questions: List<Question>)
 }
