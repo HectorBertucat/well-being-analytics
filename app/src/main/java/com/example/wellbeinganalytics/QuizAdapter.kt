@@ -6,20 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wellbeinganalytics.database.AnswerRepository
 import com.example.wellbeinganalytics.database.AppDatabase
 import com.example.wellbeinganalytics.database.Quiz
+import com.example.wellbeinganalytics.database.QuizRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 class QuizAdapter(private val quizzes: List<Quiz>, private val onQuizClick: (Quiz) -> Unit) : RecyclerView.Adapter<QuizAdapter.QuizViewHolder>() {
+    private lateinit var answerRepository: AnswerRepository
+    private lateinit var quizRepository: QuizRepository
 
     class QuizViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textViewQuizName: TextView = view.findViewById(R.id.textViewQuizName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuizViewHolder {
+        var db = AppDatabase.getDatabase(parent.context)
+        answerRepository = AnswerRepository(db)
+        quizRepository = QuizRepository(db)
         val view = LayoutInflater.from(parent.context).inflate(R.layout.quiz_item, parent, false)
         return QuizViewHolder(view)
     }
@@ -34,20 +43,17 @@ class QuizAdapter(private val quizzes: List<Quiz>, private val onQuizClick: (Qui
         holder.itemView.setOnClickListener { onQuizClick(quiz) }
 
         CoroutineScope(Dispatchers.IO).launch {
-            val lastSentDate = AppDatabase.getDatabase(holder.itemView.context).answerDao().getLastDateFromUserAndQuiz(userId, quiz.id)
+            val lastSentDate = answerRepository.getLastDateFromUserAndQuiz(userId, quiz.id)
 
             if (lastSentDate == null) {
                 holder.itemView.isEnabled = true
                 holder.itemView.alpha = 1f
             } else {
-                val lastSentDateDay = LocalDate.parse(lastSentDate).dayOfYear
-                val nbPerDay = AppDatabase.getDatabase(holder.itemView.context).quizDao().getNbPerDayFromQuiz(quiz.id)
-
+                val lastSentDayMonth = LocalDateTime.ofInstant(Instant.ofEpochMilli(lastSentDate.toLong()), java.time.ZoneId.systemDefault()).dayOfMonth
+                val nbPerDay = quizRepository.getNbPerDayFromQuiz(quiz.id)
                 if (nbPerDay == 1) {
-                    // If the quiz is a daily quiz, we check if the user has already answered today
-
-                    todayDay().let { today ->
-                        if (lastSentDateDay == today) {
+                    todayDayMonth().let { today ->
+                        if (lastSentDayMonth == today) {
                             // If the user has already answered today, we disable the quiz
                             holder.itemView.isEnabled = false
                             holder.itemView.alpha = 0.5f
@@ -62,8 +68,8 @@ class QuizAdapter(private val quizzes: List<Quiz>, private val onQuizClick: (Qui
         }
     }
 
-    private fun todayDay(): Any {
-        return LocalDate.now().dayOfYear
+    private fun todayDayMonth(): Any {
+        return LocalDate.now().dayOfMonth
     }
 
     override fun getItemCount() = quizzes.size

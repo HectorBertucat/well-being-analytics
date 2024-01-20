@@ -20,4 +20,7 @@ interface AnswerDao {
 
     @Query("SELECT MAX(date) FROM answer WHERE userId = :userId AND quizId = :quizId")
     suspend fun getLastDateFromUserAndQuiz(userId: String, quizId: Int): String
+
+    @Query("SELECT * FROM answer WHERE isSent = 0")
+    suspend fun getNotSentAnswers(): List<Answer>
 }

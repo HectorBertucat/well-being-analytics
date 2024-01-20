@@ -9,10 +9,10 @@
 
     <TextView
         android:id="@+id/textViewQuizName"
-        android:layout_width="370dp"
-        android:layout_height="138dp"
+        android:layout_width="356dp"
+        android:layout_height="168dp"
         android:gravity="center"
-        android:text="Wellbeing1"
+        android:text="@string/quiz_name_placeholder"
         android:textColor="#FFFFFF"
         android:textSize="60sp"
         android:textStyle="bold" />

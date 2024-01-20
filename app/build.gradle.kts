@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.wellbeinganalytics"
-        minSdk = 33
+        minSdk = 34
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"

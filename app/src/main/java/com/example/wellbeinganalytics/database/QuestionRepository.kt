@@ -35,4 +35,12 @@ class QuestionRepository(private val db: AppDatabase) {
     suspend fun getQuestionCount(): Int {
         return db.questionDao().getQuestionCount()
     }
+
+    suspend fun getQuestionsFromQuiz(quizId: Int): List<Question> {
+        return db.questionDao().getQuestionsFromQuiz(quizId)
+    }
+
+    suspend fun getQuestionById(id: Int): Question {
+        return db.questionDao().getQuestionById(id)
+    }
 }

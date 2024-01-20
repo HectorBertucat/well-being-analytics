@@ -20,6 +20,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textViewQuizName"
+        android:layout_width="334dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/quiz_name_placeholder"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewQuestionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/question_number_placeholder"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewQuizName"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="@+id/textViewQuizName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewQuizName" />
+
     <ImageButton
         android:id="@+id/imageButtonDisagree"
         android:layout_width="90dp"

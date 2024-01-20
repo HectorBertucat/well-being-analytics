@@ -4,11 +4,16 @@
     <string name="enter_name">Enter name</string>
     <string name="enter_id">Enter Id</string>
     <string name="or">Or</string>
-    <string name="question_placeholder">My life was well balanced between my family, personal and academic activities...</string>
+    <string name="question_placeholder">My life was well balanced between my family, personal and academic activities…</string>
     <string name="disagree_image_desc">disagree-image</string>
     <string name="neutral_image_desc">neutral image</string>
     <string name="agree_image_desc">agree image</string>
     <string name="disagree">Disagree</string>
     <string name="neutral">Neither</string>
     <string name="agree">Agree</string>
+    <string name="copy_my_id">Copy my ID</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="send_to_server">Send to Server</string>
+    <string name="quiz_name_placeholder">Wellbeing1</string>
+    <string name="question_number_placeholder">1/5</string>
 </resources>

@@ -14,4 +14,10 @@ interface QuestionDao {
 
     @Query("SELECT COUNT(*) FROM question")
     suspend fun getQuestionCount(): Int
+
+    @Query("SELECT * FROM question WHERE quizId = :quizId")
+    suspend fun getQuestionsFromQuiz(quizId: Int): List<Question>
+
+    @Query("SELECT * FROM question WHERE id = :id")
+    suspend fun getQuestionById(id: Int): Question
 }

@@ -20,17 +20,27 @@ import java.util.Date
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("questionId"),
             onDelete = ForeignKey.CASCADE)
-    ])
+    ]
+)
 
 data class Answer(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int?,
     val value: Int,
     val userId: String,
     val quizId: Int,
     val questionId: Int,
     val date: Date?,
     val isSent: Boolean = false
-)
+) {
+    constructor(
+        value: Int,
+        userId: String,
+        quizId: Int,
+        questionId: Int,
+        date: Date?,
+        isSent: Boolean = false
+    ) : this(null, value, userId, quizId, questionId, date, isSent)
+}
 
 class Converters {
     @TypeConverter
@@ -39,6 +49,6 @@ class Converters {
     }
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+        return date?.time
     }
 }

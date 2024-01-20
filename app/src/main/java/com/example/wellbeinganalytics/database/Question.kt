@@ -14,4 +14,6 @@ data class Question(
     @PrimaryKey val id: Int,
     val quizId: Int,
     val content: String
-)
+) {
+    override fun toString(): String = "$id, $quizId, $content"
+}
