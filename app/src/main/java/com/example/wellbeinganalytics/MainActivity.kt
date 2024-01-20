@@ -1,13 +1,24 @@
 package com.example.wellbeinganalytics
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import com.example.wellbeinganalytics.database.AppDatabase
+import com.example.wellbeinganalytics.database.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "wellbeing_database"
+        ).build()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -23,12 +34,41 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             } else {
                 if (id.isNotEmpty()) {
-                    // TODO: check if id is valid, if it is then "login" with id
+                    // check if id is valid, if it is then "login" with id (room)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val idExists = db.userDao().getUserById(id)
+                        if (idExists != null) {
+                            val currentUser = db.userDao().getUserById(id)
+                            val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
+                            with(sharedPref.edit()) {
+                                putString("id", currentUser.id)
+                                putString("name", currentUser.name)
+                                apply()
+                            }
+                            // redirect to quiz list
+                            Intent(this@MainActivity, QuizListActivity::class.java).also {
+                                startActivity(it)
+                            }
+                        }
+                    }
                 }
                 if (name.isNotEmpty()) {
-                    // TODO: create user with name, create "login" with generated id
+                    // check if name is valid, if it is then "login" with name (room)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val userToInsert = User(java.util.UUID.randomUUID().toString(), name)
+                        db.userDao().insertUser(userToInsert)
+                        val currentUser = db.userDao().getUserById(userToInsert.id)
+                        val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            putString("id", currentUser.id)
+                            putString("name", currentUser.name)
+                            apply()
+                        }
+                        Intent(this@MainActivity, QuizListActivity::class.java).also {
+                            startActivity(it)
+                        }
+                    }
                 }
-                // TODO: show error saying id was not valid
             }
         }
     }

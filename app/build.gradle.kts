@@ -1,11 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
     namespace = "com.example.wellbeinganalytics"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.wellbeinganalytics"
@@ -42,7 +43,14 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.room:room-runtime:2.6.1")
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    // implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    // implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    // implementation("android.arch.lifecycle:extensions:1.1.1")
+    // kapt("android.arch.lifecycle:compiler:1.1.1")
+    // implementation("android.arch.persistence.room:compiler:1.1.1")
+    // kapt("android.arch.persistence.room:runtime:1.1.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    // annotationProcessor("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")

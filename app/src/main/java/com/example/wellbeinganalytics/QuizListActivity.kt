@@ -20,6 +20,7 @@ class QuizListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_quiz_list)
 
         recyclerView = findViewById(R.id.recyclerViewQuizzes)
+        viewManager = androidx.recyclerview.widget.LinearLayoutManager(this)
 
         CoroutineScope(Dispatchers.IO).launch {
             val quizzes = AppDatabase.getDatabase(this@QuizListActivity).quizDao().getActiveQuizzes()
