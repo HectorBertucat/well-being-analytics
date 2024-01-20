@@ -30,9 +30,12 @@ class QuizAdapter(private val quizzes: List<Quiz>, private val onQuizClick: (Qui
         val sharedPref = holder.itemView.context.getSharedPreferences("user", MODE_PRIVATE)
         val userId = sharedPref.getString("id", "0")!!
 
+        holder.textViewQuizName.text = quiz.name
+        holder.itemView.setOnClickListener { onQuizClick(quiz) }
+
         CoroutineScope(Dispatchers.IO).launch {
             val lastSentDate = AppDatabase.getDatabase(holder.itemView.context).answerDao().getLastDateFromUserAndQuiz(userId, quiz.id)
-            holder.textViewQuizName.text = quiz.name
+
             if (lastSentDate == null) {
                 holder.itemView.isEnabled = true
                 holder.itemView.alpha = 1f

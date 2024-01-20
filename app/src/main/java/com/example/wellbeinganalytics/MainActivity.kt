@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             db.quizDao().insertQuiz(Quiz(1, "Sleep", 1, true))
-            db.quizDao().insertQuiz(Quiz(2, "Wellbeing1", 1, true))
+            db.quizDao().insertQuiz(Quiz(2, "Wellbeing1", 1, false))
             db.quizDao().insertQuiz(Quiz(3, "Wellbeing2", -1, true))
 
             db.questionDao().insertQuestion(Question(1, 1, "I slept very well and feel that my sleep was totally restorative."))
