@@ -24,8 +24,8 @@ import java.util.Date
 
 data class Answer(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    val value: String,
-    val userId: Int,
+    val value: Int,
+    val userId: String,
     val quizId: Int,
     val questionId: Int,
     val date: Date?,

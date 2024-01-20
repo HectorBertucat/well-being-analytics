@@ -2,7 +2,6 @@ package com.example.wellbeinganalytics
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wellbeinganalytics.database.AppDatabase
@@ -25,7 +24,6 @@ class QuizListActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val quizzes = AppDatabase.getDatabase(this@QuizListActivity).quizDao().getActiveQuizzes()
-            Log.e(this.javaClass.simpleName, "List 2: $quizzes")
             runOnUiThread {
                 viewAdapter = QuizAdapter(quizzes) { quiz ->
                     val intent = Intent(this@QuizListActivity, QuizActivity::class.java)
