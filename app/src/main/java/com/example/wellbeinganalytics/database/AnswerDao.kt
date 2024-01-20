@@ -13,11 +13,11 @@ interface AnswerDao {
     suspend fun insertAnswers(answers: List<Answer>)
 
     @Query("SELECT * FROM answer WHERE quizId = :quizId AND userId = :userId and isSent = 0")
-    suspend fun getNotSentAnswersFromQuizAndUser(quizId: Int, userId: Int): List<Answer>
+    suspend fun getNotSentAnswersFromQuizAndUser(quizId: Int, userId: String): List<Answer>
 
     @Query("SELECT * FROM answer WHERE userId = :userId AND isSent = 0")
-    suspend fun getNotSentAnswersFromUser(userId: Int): List<Answer>
+    suspend fun getNotSentAnswersFromUser(userId: String): List<Answer>
 
     @Query("SELECT MAX(date) FROM answer WHERE userId = :userId AND quizId = :quizId")
-    suspend fun getLastDateFromUserAndQuiz(userId: Int, quizId: Int): String
+    suspend fun getLastDateFromUserAndQuiz(userId: String, quizId: Int): String
 }

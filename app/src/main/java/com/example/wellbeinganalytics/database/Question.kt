@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE)])
 
 data class Question(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey val id: Int,
     val quizId: Int,
     val content: String
 )

@@ -2,11 +2,13 @@ package com.example.wellbeinganalytics
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import com.example.wellbeinganalytics.database.AppDatabase
+import com.example.wellbeinganalytics.database.Question
+import com.example.wellbeinganalytics.database.Quiz
 import com.example.wellbeinganalytics.database.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,10 +16,24 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "wellbeing_database"
-        ).build()
+        // clear database
+        val db = AppDatabase.getDatabase(this)
+        Log.e(
+            this.javaClass.simpleName,
+            "testeInsertCustomersAndListInserted(): going to insert customers and list..."
+        )
+
+        CoroutineScope(Dispatchers.IO).launch {
+            db.quizDao().insertQuiz(Quiz(1, "Sleep", 1, true))
+            db.quizDao().insertQuiz(Quiz(2, "Wellbeing1", 1, true))
+            db.quizDao().insertQuiz(Quiz(3, "Wellbeing2", -1, true))
+
+            db.questionDao().insertQuestion(Question(1, 1, "I slept very well and feel that my sleep was totally restorative."))
+            db.questionDao().insertQuestion(Question(2, 1, "I feel totally rested after this night's sleep."))
+
+            val quizzes = db.quizDao().getActiveQuizzes()
+            Log.e(this.javaClass.simpleName, "testeInsertCustomersAndListInserted(): list of quizzes: $quizzes")
+        }
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

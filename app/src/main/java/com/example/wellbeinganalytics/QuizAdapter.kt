@@ -1,5 +1,6 @@
 package com.example.wellbeinganalytics
 
+import android.content.Context.MODE_PRIVATE
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,24 +26,33 @@ class QuizAdapter(private val quizzes: List<Quiz>, private val onQuizClick: (Qui
 
     override fun onBindViewHolder(holder: QuizViewHolder, position: Int) {
         val quiz = quizzes[position]
+        // get userId from shared preferences
+        val sharedPref = holder.itemView.context.getSharedPreferences("user", MODE_PRIVATE)
+        val userId = sharedPref.getString("id", "0")!!
 
         CoroutineScope(Dispatchers.IO).launch {
-            val lastSentDate = AppDatabase.getDatabase(holder.itemView.context).answerDao().getLastDateFromUserAndQuiz(1, quiz.id)
-            val lastSentDateDay = LocalDate.parse(lastSentDate).dayOfYear
-            val nbPerDay = AppDatabase.getDatabase(holder.itemView.context).quizDao().getNbPerDayFromQuiz(quiz.id)
+            val lastSentDate = AppDatabase.getDatabase(holder.itemView.context).answerDao().getLastDateFromUserAndQuiz(userId, quiz.id)
+            holder.textViewQuizName.text = quiz.name
+            if (lastSentDate == null) {
+                holder.itemView.isEnabled = true
+                holder.itemView.alpha = 1f
+            } else {
+                val lastSentDateDay = LocalDate.parse(lastSentDate).dayOfYear
+                val nbPerDay = AppDatabase.getDatabase(holder.itemView.context).quizDao().getNbPerDayFromQuiz(quiz.id)
 
-            if (nbPerDay == 1) {
-                // If the quiz is a daily quiz, we check if the user has already answered today
+                if (nbPerDay == 1) {
+                    // If the quiz is a daily quiz, we check if the user has already answered today
 
-                todayDay().let { today ->
-                    if (lastSentDateDay == today) {
-                        // If the user has already answered today, we disable the quiz
-                        holder.itemView.isEnabled = false
-                        holder.itemView.alpha = 0.5f
-                    } else {
-                        // If the user has not already answered today, we enable the quiz
-                        holder.itemView.isEnabled = true
-                        holder.itemView.alpha = 1f
+                    todayDay().let { today ->
+                        if (lastSentDateDay == today) {
+                            // If the user has already answered today, we disable the quiz
+                            holder.itemView.isEnabled = false
+                            holder.itemView.alpha = 0.5f
+                        } else {
+                            // If the user has not already answered today, we enable the quiz
+                            holder.itemView.isEnabled = true
+                            holder.itemView.alpha = 1f
+                        }
                     }
                 }
             }
