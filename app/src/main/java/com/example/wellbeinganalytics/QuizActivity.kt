@@ -1,7 +1,6 @@
 package com.example.wellbeinganalytics
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -31,7 +30,6 @@ class QuizActivity : AppCompatActivity() {
         setContentView(R.layout.activity_quiz)
 
         selectedQuizId = intent.getIntExtra("quizId", 34)
-        Log.e(this::class.java.simpleName, "Quiz id: $selectedQuizId")
         database = AppDatabase.getDatabase(this)
 
         textViewQuestion = findViewById(R.id.textViewQuestion)
@@ -49,7 +47,6 @@ class QuizActivity : AppCompatActivity() {
     private fun loadQuestions() {
         CoroutineScope(Dispatchers.IO).launch {
             questions = database.quizDao().getQuestionsFromQuiz(selectedQuizId)
-            Log.e(this::class.java.simpleName, "Questions: $questions")
             withContext(Dispatchers.Main) {
                 if (questions.isNotEmpty()) {
                     displayQuestion(questions[currentQuestionIndex])

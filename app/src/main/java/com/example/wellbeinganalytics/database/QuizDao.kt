@@ -20,4 +20,7 @@ interface QuizDao {
 
     @Query("SELECT nbPerDay FROM quiz WHERE id = :quizId")
     suspend fun getNbPerDayFromQuiz(quizId: Int): Int
+
+    @Query("SELECT COUNT(*) FROM quiz")
+    suspend fun getQuizCount(): Int
 }

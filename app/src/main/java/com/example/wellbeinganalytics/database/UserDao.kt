@@ -11,4 +11,7 @@ interface UserDao {
 
     @Query("SELECT * FROM user WHERE id = :id")
     suspend fun getUserById(id: String): User
+
+    @Query("SELECT COUNT(*) FROM user WHERE id = :id")
+    suspend fun getUserByIdCount(id: String): Int
 }

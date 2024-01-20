@@ -6,39 +6,28 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.wellbeinganalytics.database.AppDatabase
-import com.example.wellbeinganalytics.database.Question
-import com.example.wellbeinganalytics.database.Quiz
+import com.example.wellbeinganalytics.database.QuestionRepository
 import com.example.wellbeinganalytics.database.User
+import com.example.wellbeinganalytics.database.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var userReposiory: UserRepository
+    private lateinit var questionRepository: QuestionRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        // clear database
-        val db = AppDatabase.getDatabase(this)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            db.quizDao().insertQuiz(Quiz(1, "Sleep", 1, true))
-            db.quizDao().insertQuiz(Quiz(2, "Wellbeing1", 1, true))
-            db.quizDao().insertQuiz(Quiz(3, "Wellbeing2", -1, true))
-
-            db.questionDao().insertQuestion(Question(1, 1, "I slept very well and feel that my sleep was totally restorative."))
-            db.questionDao().insertQuestion(Question(2, 1, "I feel totally rested after this night's sleep."))
-
-            db.questionDao().insertQuestion(Question(3, 2, "I related easily to the people around me."))
-            db.questionDao().insertQuestion(Question(4, 2, "I was able to face difficult situations in a positive way."))
-            db.questionDao().insertQuestion(Question(5, 2, "I felt that others liked me and appreciated me."))
-            db.questionDao().insertQuestion(Question(6, 2, "I felt satisfied with what I was able to achieve, I felt proud of myself."))
-            db.questionDao().insertQuestion(Question(7, 2, "My life was well balanced between my family, personal and academic activities.."))
-
-            db.questionDao().insertQuestion(Question(8, 3, "I felt emotionally balanced."))
-            db.questionDao().insertQuestion(Question(9, 3, "I felt good, at peace with myself."))
-            db.questionDao().insertQuestion(Question(10, 3, "I felt confident."))
-        }
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val db = AppDatabase.getDatabase(this)
+        questionRepository = QuestionRepository(db)
+        userReposiory = UserRepository(db)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            initializeDb()
+        }
 
         val editTextUserName = findViewById<EditText>(R.id.editTextUserName)
         val editTextUserId = findViewById<EditText>(R.id.editTextUserId)
@@ -54,9 +43,9 @@ class MainActivity : AppCompatActivity() {
                 if (id.isNotEmpty()) {
                     // check if id is valid, if it is then "login" with id (room)
                     CoroutineScope(Dispatchers.IO).launch {
-                        val idExists = db.userDao().getUserById(id)
-                        if (idExists != null) {
-                            val currentUser = db.userDao().getUserById(id)
+                        val idExists = userReposiory.userExists(id)
+                        if (idExists) {
+                            val currentUser = userReposiory.getUserById(id)
                             val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
                             with(sharedPref.edit()) {
                                 putString("id", currentUser.id)
@@ -74,8 +63,8 @@ class MainActivity : AppCompatActivity() {
                     // check if name is valid, if it is then "login" with name (room)
                     CoroutineScope(Dispatchers.IO).launch {
                         val userToInsert = User(java.util.UUID.randomUUID().toString(), name)
-                        db.userDao().insertUser(userToInsert)
-                        val currentUser = db.userDao().getUserById(userToInsert.id)
+                        userReposiory.insertUser(userToInsert)
+                        val currentUser = userReposiory.getUserById(userToInsert.id)
                         val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
                         with(sharedPref.edit()) {
                             putString("id", currentUser.id)
@@ -88,6 +77,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private suspend fun initializeDb() {
+        if (questionRepository.getQuestionCount() == 0) {
+            questionRepository.insertQuestions()
         }
     }
 }
