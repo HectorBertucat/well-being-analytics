@@ -27,5 +27,9 @@ abstract class AppDatabase : RoomDatabase() {
                 instance
             }
         }
+
+        fun quizDao(): Any {
+            return INSTANCE!!.quizDao()
+        }
     }
 }

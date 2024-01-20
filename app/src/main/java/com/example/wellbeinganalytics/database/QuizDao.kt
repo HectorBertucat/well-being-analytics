@@ -17,4 +17,7 @@ interface QuizDao {
 
     @Query("SELECT * FROM question WHERE quizId = :quizId")
     suspend fun getQuestionsFromQuiz(quizId: Int): List<Question>
+
+    @Query("SELECT nbPerDay FROM quiz WHERE id = :quizId")
+    suspend fun getNbPerDayFromQuiz(quizId: Int): Int
 }
