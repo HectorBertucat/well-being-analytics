@@ -10,7 +10,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewQuizzes"
         android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="625dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
@@ -18,7 +18,7 @@
         tools:listitem="@layout/quiz_item" />
 
     <Button
-        android:id="@+id/buttonCopyId"
+        android:id="@+id/copyIdButton"
         android:layout_width="141dp"
         android:layout_height="50dp"
         android:text="@string/copy_my_id"
@@ -29,24 +29,24 @@
         app:layout_constraintVertical_bias="0.02" />
 
     <Button
-        android:id="@+id/buttonSignOut"
+        android:id="@+id/signOutButton"
         android:layout_width="141dp"
         android:layout_height="50dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:text="@string/sign_out"
-        app:layout_constraintEnd_toEndOf="@+id/sendToServer"
+        app:layout_constraintEnd_toEndOf="@+id/sendToServerButton"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/sendToServer"
-        app:layout_constraintTop_toTopOf="@+id/sendToServer" />
+        app:layout_constraintStart_toStartOf="@+id/sendToServerButton"
+        app:layout_constraintTop_toTopOf="@+id/sendToServerButton" />
 
     <Button
-        android:id="@+id/sendToServer"
+        android:id="@+id/sendToServerButton"
         android:layout_width="141dp"
         android:layout_height="50dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:text="@string/send_to_server"
-        app:layout_constraintEnd_toEndOf="@+id/buttonCopyId"
-        app:layout_constraintStart_toStartOf="@+id/buttonCopyId"
-        app:layout_constraintTop_toTopOf="@+id/buttonCopyId" />
+        app:layout_constraintEnd_toEndOf="@+id/copyIdButton"
+        app:layout_constraintStart_toStartOf="@+id/copyIdButton"
+        app:layout_constraintTop_toTopOf="@+id/copyIdButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

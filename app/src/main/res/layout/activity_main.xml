@@ -26,7 +26,7 @@
         android:layout_marginTop="35dp"
         android:hint="@string/enter_id"
         android:importantForAutofill="no"
-        android:inputType="number"
+        android:inputType="text"
         android:minHeight="48dp" />
 
     <TextView

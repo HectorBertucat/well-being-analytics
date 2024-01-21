@@ -1,5 +1,6 @@
 package com.example.wellbeinganalytics
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
@@ -98,7 +99,9 @@ class QuizActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 // Notify user that quiz is complete, navigate back or to another screen
                 // redirect to home
-                finish()
+                Intent(this@QuizActivity, QuizListActivity::class.java).also {
+                    startActivity(it)
+                }
             }
         }
     }

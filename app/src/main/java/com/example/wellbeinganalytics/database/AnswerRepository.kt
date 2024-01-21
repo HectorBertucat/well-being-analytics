@@ -1,7 +1,5 @@
 package com.example.wellbeinganalytics.database
 
-import android.util.Log
-
 class AnswerRepository (private val db: AppDatabase) {
     fun getDatabase(): AppDatabase {
         return db
@@ -12,23 +10,10 @@ class AnswerRepository (private val db: AppDatabase) {
         val quiz = db.quizDao().getQuizById(answer.quizId)
         val question = db.questionDao().getQuestionById(answer.questionId)
 
-        Log.d("InsertAnswer", "User exists: $user")
-        Log.d("InsertAnswer", "Quiz exists: $quiz")
-        Log.d("InsertAnswer", "Question exists: $question")
         db.answerDao().insertAnswer(answer)
     }
 
     suspend fun insertAnswers(answers: List<Answer>) {
-        for (answer in answers) {
-            val user = db.userDao().getUserById(answer.userId)
-            val quiz = db.quizDao().getQuizById(answer.quizId)
-            val question = db.questionDao().getQuestionById(answer.questionId)
-
-            Log.d("InsertAnswer", "User exists: $user")
-            Log.d("InsertAnswer", "Quiz exists: $quiz")
-            Log.d("InsertAnswer", "Question exists: $question")
-        }
-
         db.answerDao().insertAnswers(answers)
     }
 

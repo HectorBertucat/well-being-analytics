@@ -2,7 +2,6 @@ package com.example.wellbeinganalytics
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -100,6 +99,5 @@ class MainActivity : AppCompatActivity() {
         if (questionRepository.getQuestionCount() == 0) {
             questionRepository.insertQuestions()
         }
-        Log.d("Answers", answerRepository.getNotSentAnswers().toString())
     }
 }
