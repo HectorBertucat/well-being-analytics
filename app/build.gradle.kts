@@ -51,6 +51,7 @@ dependencies {
     // kapt("android.arch.persistence.room:runtime:1.1.1")
     kapt("androidx.room:room-compiler:2.6.1")
     // annotationProcessor("androidx.room:room-compiler:2.6.1")
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")

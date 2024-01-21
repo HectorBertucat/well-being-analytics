@@ -23,4 +23,15 @@ interface AnswerDao {
 
     @Query("SELECT * FROM answer WHERE isSent = 0")
     suspend fun getNotSentAnswers(): List<Answer>
+
+    suspend fun getNotSentQuizIds(userId: String): List<Int> {
+        val answers = getNotSentAnswersFromUser(userId)
+        val quizIds = mutableListOf<Int>()
+        for (answer in answers) {
+            if (!quizIds.contains(answer.quizId)) {
+                quizIds.add(answer.quizId)
+            }
+        }
+        return quizIds
+    }
 }

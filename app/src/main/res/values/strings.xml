@@ -16,4 +16,5 @@
     <string name="send_to_server">Send to Server</string>
     <string name="quiz_name_placeholder">Wellbeing1</string>
     <string name="question_number_placeholder">1/5</string>
+    <string name="go_back">Go Back</string>
 </resources>

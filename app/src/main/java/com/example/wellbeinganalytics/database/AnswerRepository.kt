@@ -33,4 +33,8 @@ class AnswerRepository (private val db: AppDatabase) {
         return db.answerDao().getNotSentAnswers()
     }
 
+    suspend fun getNotSentQuizIds(userId: String): List<Int> {
+        return db.answerDao().getNotSentQuizIds(userId)
+    }
+
 }

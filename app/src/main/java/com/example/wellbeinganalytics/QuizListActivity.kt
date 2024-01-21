@@ -8,13 +8,16 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wellbeinganalytics.database.AnswerRepository
 import com.example.wellbeinganalytics.database.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 
 class QuizListActivity : AppCompatActivity() {
 
@@ -27,6 +30,8 @@ class QuizListActivity : AppCompatActivity() {
 
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
+
+    private lateinit var answerRepository: AnswerRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +58,9 @@ class QuizListActivity : AppCompatActivity() {
             .build()
 
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+
+        val db = AppDatabase.getDatabase(this)
+        answerRepository = AnswerRepository(db)
 
         recyclerView = findViewById(R.id.recyclerViewQuizzes)
         viewManager = androidx.recyclerview.widget.LinearLayoutManager(this)
@@ -107,7 +115,60 @@ class QuizListActivity : AppCompatActivity() {
     }
 
     private fun sendDataToServer() {
-        // TODO: Handle sending data to server and displaying the page
-        // TODO: After sending data to server, set all of the answers to isSent = true
+        val client = OkHttpClient()
+        var url = "http://10.0.2.2:8080" // localhost from emulator
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
+            val userId = sharedPref.getString("id", null)
+            val answersDataJson = getAnswerDataJson()[0]
+            val answerIds = getAnswerDataJson()[1]
+            val answersIdsInt = ArrayList<Int>()
+
+            for (answerId in answerIds.split(",")) {
+                answersIdsInt.add(answerId.toInt())
+            }
+
+            Log.e("answerIds", answersIdsInt.toString())
+
+            var finalUrl = "$url?userId=$userId&quizData=$answersDataJson"
+
+            Intent(this@QuizListActivity, WebViewActivity::class.java).also {
+                it.putExtra("url", finalUrl)
+                it.putExtra("answerIds", answersIdsInt)
+                startActivity(it)
+            }
+        }
+    }
+
+    private suspend fun getAnswerDataJson(): List<String> {
+        val list = ArrayList<String>();
+        val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
+        val userId = sharedPref.getString("id", '1'.toString())!!
+        val notSentQuizIds = answerRepository.getNotSentQuizIds(userId)
+        val answerIds = ArrayList<String>()
+
+        var quizData = "["
+
+        for (quizId in notSentQuizIds) {
+            val answers = answerRepository.getNotSentAnswersFromQuizAndUser(quizId, userId)
+            var json = "{\"quizId\":$quizId,\"answers\":["
+            for (answer in answers) {
+                answerIds.add(answer.id.toString())
+                json = json.plus("{\"questionId\":${answer.questionId},\"value\":\"${answer.value}\",\"date\":\"${answer.date}\"},")
+            }
+            json = json.dropLast(1)
+            json = json.plus("]},")
+            quizData = quizData.plus(json)
+        }
+        quizData = quizData.dropLast(1)
+        quizData = quizData.plus("]")
+
+        Log.e("quizData", quizData)
+
+        list.add(quizData)
+        list.add(answerIds.joinToString(","))
+        return list
     }
 }
