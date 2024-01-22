@@ -13,6 +13,14 @@ class AnswerRepository (private val db: AppDatabase) {
         db.answerDao().insertAnswer(answer)
     }
 
+    suspend fun getAnswer(id: Int): Answer {
+        return db.answerDao().getAnswer(id)
+    }
+
+    suspend fun setAnswerSent(id: Int) {
+        db.answerDao().setAnswerSent(id)
+    }
+
     suspend fun insertAnswers(answers: List<Answer>) {
         db.answerDao().insertAnswers(answers)
     }

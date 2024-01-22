@@ -12,6 +12,12 @@ interface AnswerDao {
     @Insert
     suspend fun insertAnswers(answers: List<Answer>)
 
+    @Query("SELECT * FROM answer WHERE id = :id")
+    suspend fun getAnswer(id: Int): Answer
+
+    @Query("UPDATE answer SET isSent = 1 WHERE id = :id")
+    suspend fun setAnswerSent(id: Int)
+
     @Query("SELECT * FROM answer WHERE quizId = :quizId AND userId = :userId and isSent = 0")
     suspend fun getNotSentAnswersFromQuizAndUser(quizId: Int, userId: String): List<Answer>
 

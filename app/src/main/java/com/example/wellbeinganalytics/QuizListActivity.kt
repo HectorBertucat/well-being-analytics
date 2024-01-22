@@ -17,7 +17,6 @@ import com.example.wellbeinganalytics.database.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
 
 class QuizListActivity : AppCompatActivity() {
 
@@ -115,29 +114,29 @@ class QuizListActivity : AppCompatActivity() {
     }
 
     private fun sendDataToServer() {
-        val client = OkHttpClient()
-        var url = "http://10.0.2.2:8080" // localhost from emulator
-
-
         CoroutineScope(Dispatchers.IO).launch {
             val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
             val userId = sharedPref.getString("id", null)
             val answersDataJson = getAnswerDataJson()[0]
-            val answerIds = getAnswerDataJson()[1]
-            val answersIdsInt = ArrayList<Int>()
+            Log.e("answersDataJson", answersDataJson)
+            if (answersDataJson != "null") {
+                val answerIds = getAnswerDataJson()[1]
+                val answersIds = ArrayList<String>()
+                var url = "http://10.0.2.2:8080" // localhost from emulator
 
-            for (answerId in answerIds.split(",")) {
-                answersIdsInt.add(answerId.toInt())
-            }
+                for (answerId in answerIds.split(",")) {
+                    answersIds.add(answerId)
+                }
 
-            Log.e("answerIds", answersIdsInt.toString())
+                Log.e("answerIds", answersIds.toString())
 
-            var finalUrl = "$url?userId=$userId&quizData=$answersDataJson"
+                var finalUrl = "$url?userId=$userId&quizData=$answersDataJson"
 
-            Intent(this@QuizListActivity, WebViewActivity::class.java).also {
-                it.putExtra("url", finalUrl)
-                it.putExtra("answerIds", answersIdsInt)
-                startActivity(it)
+                Intent(this@QuizListActivity, WebViewActivity::class.java).also {
+                    it.putExtra("url", finalUrl)
+                    it.putExtra("answerIds", answersIds)
+                    startActivity(it)
+                }
             }
         }
     }
@@ -165,7 +164,9 @@ class QuizListActivity : AppCompatActivity() {
         quizData = quizData.dropLast(1)
         quizData = quizData.plus("]")
 
-        Log.e("quizData", quizData)
+        if (answerIds.size == 0) {
+            quizData = null.toString()
+        }
 
         list.add(quizData)
         list.add(answerIds.joinToString(","))
